@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Boat;
 use App\Form\BoatType;
 use App\Repository\BoatRepository;
+use Doctrine\Inflector\Rules\Word;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -104,5 +105,34 @@ class BoatController extends AbstractController
         }
 
         return $this->redirectToRoute('boat_index');
+    }
+
+    /**
+     * @Route("/direction/{direction}", name="boat_direction", methods="GET")
+     */
+    public function moveDirection(string $direction, BoatRepository $boatRepository, EntityManagerInterface $em ): Response
+    {   
+        $boat = $boatRepository->findOneBy([]);
+        $x = $boat->getCoordX();
+        $y = $boat->getCoordY();
+
+        switch ($direction){
+            case "N":
+                $boat->setCoordY($y-1);
+                break;
+            case "S":
+                $boat->setCoordY($y+1);
+                break;
+            case "E":
+                $boat->setCoordX($x+1);
+                break;
+            case "W":
+                $boat->setCoordX($x-1);
+                break;
+            default;
+        }
+
+        $em->flush();
+        return $this->redirectToRoute('map');
     }
 }
