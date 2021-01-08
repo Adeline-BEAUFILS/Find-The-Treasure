@@ -129,7 +129,8 @@ class BoatController extends AbstractController
             case "W":
                 $boat->setCoordX($x-1);
                 break;
-            default;
+            default:
+            // erreur404
         }
 
         $em->flush();
