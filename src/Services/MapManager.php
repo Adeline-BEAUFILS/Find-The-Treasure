@@ -39,4 +39,14 @@ class MapManager
         $result = $tiles[$tilesNumb];
         return $result;
     }
+
+    function checkTreasure(Boat $boat){
+        $treasureTile = $this->tileRepository->findOneBy(["hasTreasure" => true]);
+        if(($boat->getCoordY() === $treasureTile->getCoordY()) && ($boat->getCoordX() === $treasureTile->getCoordX())) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
 }
