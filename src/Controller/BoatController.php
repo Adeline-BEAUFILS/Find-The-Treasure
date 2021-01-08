@@ -120,6 +120,9 @@ class BoatController extends AbstractController
                 if  ($mapManager->tileExists($boat->getCoordX() + 0, $boat->getCoordY() + 1 ) === true) {
                 $boat->setCoordX($boat->getCoordX() + 0);
                 $boat->setCoordY($boat->getCoordY() + 1);
+                if($mapManager->checkTreasure($boat) === true){
+                    $this->addFlash('success', 'Treasure found !');
+                    }
                 }
                 else {
                     $this->addFlash('message', 'Tile does not exist');
@@ -130,6 +133,9 @@ class BoatController extends AbstractController
                 if  ($mapManager->tileExists($boat->getCoordX() + 0, $boat->getCoordY() - 1 ) === true) {
                     $boat->setCoordX($boat->getCoordX() + 0);
                     $boat->setCoordY($boat->getCoordY() - 1);
+                    if($mapManager->checkTreasure($boat) === true){
+                        $this->addFlash('success', 'You got the Treasure !');
+                    }
                 }
                 else {
                     $this->addFlash('message', 'Tile does not exist');
@@ -140,6 +146,9 @@ class BoatController extends AbstractController
                 if  ($mapManager->tileExists($boat->getCoordX() + 1, $boat->getCoordY() + 0 ) === true) {
                     $boat->setCoordX($boat->getCoordX() + 1);
                     $boat->setCoordY($boat->getCoordY() + 0);
+                    if($mapManager->checkTreasure($boat) === true){
+                        $this->addFlash('success', 'You got the Treasure !');
+                    }
                 }
                 else {
                     $this->addFlash('message', 'Tile does not exist');
@@ -150,6 +159,9 @@ class BoatController extends AbstractController
                 if  ($mapManager->tileExists($boat->getCoordX() - 1, $boat->getCoordY() + 0) === true) {
                     $boat->setCoordX($boat->getCoordX() - 1);
                     $boat->setCoordY($boat->getCoordY() + 0);
+                    if($mapManager->checkTreasure($boat) === true){
+                        $this->addFlash('success', 'You got the Treasure !');
+                    }
                 }
                 else {
                     $this->addFlash('message', 'Tile does not exist');
@@ -157,7 +169,7 @@ class BoatController extends AbstractController
                 }
             break;
             default:
-                throw $this->createNotFoundException('The product does not exist');
+                throw $this->createNotFoundException('Sorry, it does not exist');
             break;
 
         }
