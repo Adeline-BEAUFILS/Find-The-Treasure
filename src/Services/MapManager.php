@@ -1,26 +1,33 @@
 <?php
 
-namespace App\Service;
+namespace App\Services;
 
 use App\Repository\TileRepository;
-use App\Service\MessageGenerator;
-use Symfony\Component\HttpFoundation\Response;
 
-
-Class MapManager
+/**
+* Class MapManagerService
+* @package App\Services
+*/
+class MapManager
 {
     /**
-     * @return bool
+     * @var TileRepository
      */
-    public function tileExists(int $x, int $y, TileRepository $tileRepository): bool
+    private $tileRepository;
+
+    public function __construct(TileRepository $tileRepository)
     {
-        $tile = $tileRepository->findAll();
-        $coordinates[]=$x;
-        $coordinates[]=$y;
-        if(in_array($coordinates, $tile)){
-            return true;
-        } else{
+        $this->tileRepository = $tileRepository;
+    }
+
+    function tileExists(int $coordX, int $coordY): bool
+    {
+        $tileExists = $this->tileRepository->findTile($coordX, $coordY);
+
+        if ($tileExists === null) {
             return false;
+        } else {
+            return true;
         }
     }
 }

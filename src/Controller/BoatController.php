@@ -11,6 +11,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Services\MapManager;
 
 /**
  * @Route("/boat")
@@ -110,30 +111,59 @@ class BoatController extends AbstractController
     /**
      * @Route("/direction/{direction}", name="boat_direction", methods="GET")
      */
-    public function moveDirection(string $direction, BoatRepository $boatRepository, EntityManagerInterface $em ): Response
+    public function moveDirection(string $direction, BoatRepository $boatRepository, MapManager $mapManager): Response
     {   
+        $boat = new Boat();
         $boat = $boatRepository->findOneBy([]);
-        $x = $boat->getCoordX();
-        $y = $boat->getCoordY();
-
-        switch ($direction){
-            case "N":
-                $boat->setCoordY($y-1);
-                break;
-            case "S":
-                $boat->setCoordY($y+1);
-                break;
-            case "E":
-                $boat->setCoordX($x+1);
-                break;
-            case "W":
-                $boat->setCoordX($x-1);
-                break;
+        switch ($direction) {
+            case 'S':
+                if  ($mapManager->tileExists($boat->getCoordX() + 0, $boat->getCoordY() + 1 ) === true) {
+                $boat->setCoordX($boat->getCoordX() + 0);
+                $boat->setCoordY($boat->getCoordY() + 1);
+                }
+                else {
+                    $this->addFlash('message', 'Tile does not exist');
+                    return $this->redirectToRoute('map');
+                }
+            break;
+            case 'N':
+                if  ($mapManager->tileExists($boat->getCoordX() + 0, $boat->getCoordY() - 1 ) === true) {
+                    $boat->setCoordX($boat->getCoordX() + 0);
+                    $boat->setCoordY($boat->getCoordY() - 1);
+                }
+                else {
+                    $this->addFlash('message', 'Tile does not exist');
+                       return $this->redirectToRoute('map');
+                }
+            break;
+            case 'E':
+                if  ($mapManager->tileExists($boat->getCoordX() + 1, $boat->getCoordY() + 0 ) === true) {
+                    $boat->setCoordX($boat->getCoordX() + 1);
+                    $boat->setCoordY($boat->getCoordY() + 0);
+                }
+                else {
+                    $this->addFlash('message', 'Tile does not exist');
+                    return $this->redirectToRoute('map');
+                }
+            break;
+            case 'W':
+                if  ($mapManager->tileExists($boat->getCoordX() - 1, $boat->getCoordY() + 0) === true) {
+                    $boat->setCoordX($boat->getCoordX() - 1);
+                    $boat->setCoordY($boat->getCoordY() + 0);
+                }
+                else {
+                    $this->addFlash('message', 'Tile does not exist');
+                    return $this->redirectToRoute('map');
+                }
+            break;
             default:
-            // erreur404
-        }
+                throw $this->createNotFoundException('The product does not exist');
+            break;
 
-        $em->flush();
+        }
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->persist($boat);
+        $entityManager->flush();
         return $this->redirectToRoute('map');
     }
 }

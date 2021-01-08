@@ -39,10 +39,10 @@
                 <div class="navigation">
                     <h2>Navigation</h2>
                     {# Add here N/S/E/W buttons #}
-                    <a href="/boat/direction/N">N</a>
-                    <a href="/boat/direction/S">S</a>
-                    <a href="/boat/direction/E">E</a>
-                    <a href="/boat/direction/W">W</a>
+                    <li><a href="{{ path('boat_direction', {'direction': 'N'}) }}">N</a></li>
+                    <li><a href="{{ path('boat_direction', {'direction': 'S'}) }}">S</a></li>
+                    <li><a href="{{ path('boat_direction', {'direction': 'E'}) }}">E</a></li>
+                    <li><a href="{{ path('boat_direction', {'direction': 'W'}) }}">W</a></li>
                 </div>
             </div>
         </div>

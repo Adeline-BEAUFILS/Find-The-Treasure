@@ -47,4 +47,16 @@ class TileRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function findTile($coordX, $coordY)
+    {
+        return $this->createQueryBuilder('t')
+            ->andWhere('t.coordX = :coordX')
+            ->andWhere('t.coordY = :coordY')
+            ->setParameter('coordX', $coordX)
+            ->setParameter('coordY', $coordY)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
 }
