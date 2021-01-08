@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Repository\TileRepository;
+use App\Entity\Boat;
 
 /**
 * Class MapManagerService
@@ -29,5 +30,13 @@ class MapManager
         } else {
             return true;
         }
+    }
+
+    function getRandomIsland()
+    {
+        $tiles = $this->tileRepository->findBy(['type' => 'island'] );
+        $tilesNumb = array_rand($tiles);
+        $result = $tiles[$tilesNumb];
+        return $result;
     }
 }
